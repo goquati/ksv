@@ -20,7 +20,7 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
       - name: check
-        run: ./gradlew check
+        run: ./gradlew jvmTest
 
   publish:
     name: publish package

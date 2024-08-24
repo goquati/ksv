@@ -4,14 +4,14 @@
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/goquati/ksv/check.yml)
 ![Static Badge](https://img.shields.io/badge/coverage-100%25-success)
 
-**KSV** is a Kotlin library designed to provide a type-safe and convenient way to write CSV files. It leverages Kotlin's coroutines and flows, making it a perfect choice for handling large datasets in a non-blocking manner. Although currently limited to JVM platforms, KSV is built with multi-platform support in mind. Future updates are planned to include CSV reading capabilities.
+**KSV** is a Kotlin library designed to provide a type-safe and convenient way to write CSV files. It leverages Kotlin's coroutines and flows, making it a perfect choice for handling large datasets in a non-blocking manner. KSV now supports multiple platforms, including JVM, JavaScript (browser and Node.js), macOS (x64 and ARM64), Linux (x64 and ARM64), and Windows (mingwX64). Future updates are planned to include CSV reading capabilities.
 
 ## Features
 
 - **Type-safe CSV Writing:** Define your CSV schema using Kotlin's type-safe syntax.
 - **Coroutines/Flows Support:** Seamlessly integrate with Kotlin flows for efficient, asynchronous data processing.
 - **Customizable Output:** Easily configure delimiters, headers, and format columns to match your needs.
-- **Multi-platform Ready:** Designed with future multi-platform support in mind, though currently available only for JVM.
+- **Multi-platform Support:** Available on JVM, JS (browser and Node.js), macOS, Linux, and Windows.
 
 ## Installation
 
@@ -80,7 +80,16 @@ You can customize various aspects of the CSV output:
 ### Planned Features
 
 - **CSV Reading:** Future releases will include functionality to read CSV files into type-safe Kotlin data classes.
-- **Extended Platform Support:** Expanding support to other Kotlin platforms, including JS and Native.
+
+## Platform Support
+
+KSV supports multiple platforms:
+
+- **JVM**
+- **JavaScript** (Browser and Node.js)
+- **macOS** (x64 and ARM64)
+- **Linux** (x64 and ARM64)
+- **Windows** (mingwX64)
 
 ## Contributing
 

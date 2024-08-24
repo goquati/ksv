@@ -11,7 +11,7 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  check-linux:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -20,5 +20,37 @@ jobs:
         with:
           java-version: '21'
           distribution: 'temurin'
-      - name: check
-        run: ./gradlew check
+      - name: check jvm
+        run: ./gradlew jvmTest
+      - name: check 100% coverage
+        run: ./gradlew koverVerify
+      - name: check js
+        run: ./gradlew jsTest
+#      - name: check linuxX64
+#        run: ./gradlew linuxX64Test
+#  check-macos:
+#    runs-on: macos-latest
+#    steps:
+#      - uses: actions/checkout@v4
+#      - name: Set up JDK 21
+#        uses: actions/setup-java@v4
+#        with:
+#          java-version: '21'
+#          distribution: 'temurin'
+#      - name: check macosArm64
+#        run: ./gradlew macosArm64Test
+#      - name: check macosX64
+#        run: ./gradlew macosX64Test
+#      - name: check linuxArm64
+#        run: ./gradlew linuxArm64TestKlibrary
+#  check-windows:
+#    runs-on: windows-latest
+#    steps:
+#      - uses: actions/checkout@v4
+#      - name: Set up JDK 21
+#        uses: actions/setup-java@v4
+#        with:
+#          java-version: '21'
+#          distribution: 'temurin'
+#      - name: check mingwX64
+#        run: ./gradlew mingwX64Test

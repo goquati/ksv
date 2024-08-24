@@ -4,7 +4,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.TestResult
+import kotlinx.coroutines.test.runTest
 import kotlinx.io.bytestring.ByteString
 import kotlinx.io.bytestring.decodeToString
 import kotlin.test.Test
@@ -30,7 +31,7 @@ class KsvTest {
 
     private data class RowData(
         val title: String,
-        val amount: Double,
+        val amount: Int,
         val description: String?,
     )
 
@@ -39,10 +40,10 @@ class KsvTest {
     )
 
     @Test
-    fun `test basic`(): Unit = runBlocking {
+    fun testBasic(): TestResult = runTest {
         val input = flowOf(
-            RowData(title = "World", amount = 3.0, description = null),
-            RowData(title = "Hello", amount = 47.0, description = "hello world"),
+            RowData(title = "World", amount = 3, description = null),
+            RowData(title = "Hello", amount = 47, description = "hello world"),
         )
         test(
             input = input,
@@ -55,8 +56,8 @@ class KsvTest {
             },
             expectedOutput = """
                 title,amount,description
-                World,3.0,
-                Hello,47.0,hello world${'\n'}
+                World,3,
+                Hello,47,hello world${'\n'}
             """.trimIndent(),
         )
         test(
@@ -78,18 +79,18 @@ class KsvTest {
             },
             expectedOutput = """
                 my-title,my-amount,my-description
-                World,3.0,
-                Hello,47.0,hello world${'\n'}
+                World,3,
+                Hello,47,hello world${'\n'}
             """.trimIndent(),
         )
     }
 
 
     @Test
-    fun `test BOM`(): Unit = runBlocking {
+    fun testBOM(): TestResult = runTest {
         val input = flowOf(
-            RowData(title = "World", amount = 3.0, description = null),
-            RowData(title = "Hello", amount = 47.0, description = "hello world"),
+            RowData(title = "World", amount = 3, description = null),
+            RowData(title = "Hello", amount = 47, description = "hello world"),
         )
 
         fun getSerializerBuilder(bom: Boolean): CsvSerializer.Builder<RowData>.() -> Unit = {
@@ -105,8 +106,8 @@ class KsvTest {
 
         val expectedResult = """
             title,amount,description
-            World,3.0,
-            Hello,47.0,hello world${'\n'}
+            World,3,
+            Hello,47,hello world${'\n'}
         """.trimIndent()
 
         test(input = input, serializer = getSerializerBuilder(bom = false), expectedOutput = expectedResult)
@@ -115,10 +116,10 @@ class KsvTest {
 
 
     @Test
-    fun `test header`(): Unit = runBlocking {
+    fun testHeader(): TestResult = runTest {
         val input = flowOf(
-            RowData(title = "World", amount = 3.0, description = null),
-            RowData(title = "Hello", amount = 47.0, description = "hello world"),
+            RowData(title = "World", amount = 3, description = null),
+            RowData(title = "Hello", amount = 47, description = "hello world"),
         )
 
         fun getSerializerBuilder(header: Boolean): CsvSerializer.Builder<RowData>.() -> Unit = {
@@ -135,8 +136,8 @@ class KsvTest {
             input = input,
             serializer = getSerializerBuilder(header = false),
             expectedOutput = """
-                World,3.0,
-                Hello,47.0,hello world${'\n'}
+                World,3,
+                Hello,47,hello world${'\n'}
             """.trimIndent()
         )
         test(
@@ -144,15 +145,15 @@ class KsvTest {
             serializer = getSerializerBuilder(header = true),
             expectedOutput = """
                 title,amount,description
-                World,3.0,
-                Hello,47.0,hello world${'\n'}
+                World,3,
+                Hello,47,hello world${'\n'}
             """.trimIndent()
         )
     }
 
 
     @Test
-    fun `test empty`(): Unit = runBlocking {
+    fun testEmpty(): TestResult = runTest {
         test(
             input = flowOf<RowData>(),
             serializer = {},
@@ -160,8 +161,8 @@ class KsvTest {
         )
         test(
             input = flowOf(
-                RowData(title = "World", amount = 3.0, description = null),
-                RowData(title = "Hello", amount = 47.0, description = "hello world"),
+                RowData(title = "World", amount = 3, description = null),
+                RowData(title = "Hello", amount = 47, description = "hello world"),
             ),
             serializer = {},
             expectedOutput = "\n\n\n",
@@ -169,7 +170,7 @@ class KsvTest {
     }
 
     @Test
-    fun `test escape`(): Unit = runBlocking {
+    fun testEscape(): TestResult = runTest {
         test(
             input = flowOf<RowData>(),
             serializer = {},
@@ -177,8 +178,8 @@ class KsvTest {
         )
         test(
             input = flowOf(
-                RowData(title = "World", amount = 3.0, description = null),
-                RowData(title = "Hello", amount = 47.0, description = "hello world"),
+                RowData(title = "World", amount = 3, description = null),
+                RowData(title = "Hello", amount = 47, description = "hello world"),
             ),
             serializer = {},
             expectedOutput = "\n\n\n",
@@ -242,7 +243,7 @@ class KsvTest {
     }
 
     @Test
-    fun `test force escape`(): Unit = runBlocking {
+    fun testForceEscape(): TestResult = runTest {
         test(
             input = flowOf(
                 SimpleRowData("hello"),

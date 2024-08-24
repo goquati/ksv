@@ -21,6 +21,15 @@ repositories {
 
 kotlin {
     jvm()
+    js {
+        browser()
+        nodejs()
+    }
+    macosX64()
+    macosArm64()
+    linuxX64()
+    linuxArm64()
+    mingwX64()
     sourceSets {
         val commonMain by getting {
             explicitApi()
@@ -39,6 +48,7 @@ kotlin {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-test")
                 implementation("io.kotest:kotest-assertions-core:5.9.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.9.0-RC")
             }
         }
     }
