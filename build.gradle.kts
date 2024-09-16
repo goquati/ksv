@@ -8,6 +8,7 @@ plugins {
     id("org.jetbrains.kotlinx.kover") version "0.8.1"
     `maven-publish`
     id("com.vanniktech.maven.publish") version "0.28.0"
+    id("org.jetbrains.dokka") version "1.9.20"
 }
 
 val githubUser = "goquati"
@@ -99,4 +100,8 @@ mavenPublishing {
         automaticRelease = true,
     )
     signAllPublications()
+}
+
+tasks.dokkaHtml.configure {
+    moduleVersion = version as String
 }
