@@ -40,7 +40,6 @@ kotlin {
                 languageVersion.set(KotlinVersion.KOTLIN_2_0)
             }
             dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-io-core:0.5.3")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
             }
         }

@@ -3,22 +3,13 @@ package io.github.goquati.ksv
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.flow
-import kotlinx.io.bytestring.ByteString
-import kotlinx.io.bytestring.decodeToString
-import kotlinx.io.bytestring.encodeToByteString
 
 public data class CsvSerializer<Row>(
     val config: CsvConfig,
     val schema: CsvSchema<Row>,
 ) {
-    public fun streamCsv(data: Flow<Row>): Flow<ByteString> = flow {
-        serializeCsv(data = data).collect {
-            emit(it.encode())
-        }
-    }
-
-    public fun serializeCsv(data: Flow<Row>): Flow<String> = flow {
-        if (config.withBom) emit(config.encoding.bom.decode())
+    public fun streamCsv(data: Flow<Row>): Flow<String> = flow {
+        if (config.withBom) emit(config.encoding.bom)
         if (config.withHeader) {
             emitRow { it.name.csvEscape(forceEscape = false) }
             emit(CsvConfig.CSV_NEW_LINE.toString())
@@ -55,14 +46,6 @@ public data class CsvSerializer<Row>(
         else
             this
     */
-
-    private fun String.encode() = when (config.encoding) {
-        Encoding.UTF_8 -> encodeToByteString()
-    }
-
-    private fun ByteString.decode() = when (config.encoding) {
-        Encoding.UTF_8 -> decodeToString()
-    }
 
     private fun String.needsEscaping(): Boolean {
         val escapeChars = charArrayOf(config.delimiter, CsvConfig.CSV_QUOTE, CsvConfig.CSV_NEW_LINE, '\r')

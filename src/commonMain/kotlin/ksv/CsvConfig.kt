@@ -4,13 +4,13 @@ public data class CsvConfig(
     val withHeader: Boolean,
     val withBom: Boolean,
     val delimiter: Char,
-    val encoding: Encoding,
+    val encoding: CsvEncoding,
 ) {
     public class Builder(
         public var withHeader: Boolean = true,
         public var withBom: Boolean = false,
         public var delimiter: Char = ',',
-        public var encoding: Encoding = Encoding.UTF_8,
+        public var encoding: CsvEncoding = CsvEncoding.UTF_8,
     ) {
         internal fun build() = CsvConfig(
             withHeader = withHeader,

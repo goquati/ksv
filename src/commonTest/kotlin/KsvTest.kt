@@ -2,30 +2,23 @@ import io.github.goquati.ksv.*
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.TestResult
 import kotlinx.coroutines.test.runTest
-import kotlinx.io.bytestring.ByteString
-import kotlinx.io.bytestring.decodeToString
 import kotlin.test.Test
 
 class KsvTest {
     companion object {
         private suspend fun Flow<String>.concat() = toList().joinToString("")
-        private suspend fun Flow<ByteString>.concatToString() = map { it.decodeToString() }.toList().joinToString("")
 
         private suspend fun <Row> test(
             input: Flow<Row>,
             serializer: CsvSerializer.Builder<Row>.() -> Unit,
             expectedOutput: String,
         ) {
-            csvSerializer(block = serializer).streamCsv(input).concatToString() shouldBe expectedOutput
-            input.streamCsv(block = serializer).concatToString() shouldBe expectedOutput
-            input.streamCsv(serializer = csvSerializer(block = serializer)).concatToString() shouldBe expectedOutput
-            csvSerializer(block = serializer).serializeCsv(input).concat() shouldBe expectedOutput
-            input.serializeCsv(block = serializer).concat() shouldBe expectedOutput
-            input.serializeCsv(serializer = csvSerializer(block = serializer)).concat() shouldBe expectedOutput
+            csvSerializer(block = serializer).streamCsv(input).concat() shouldBe expectedOutput
+            input.streamCsv(block = serializer).concat() shouldBe expectedOutput
+            input.streamCsv(serializer = csvSerializer(block = serializer)).concat() shouldBe expectedOutput
         }
     }
 
@@ -68,7 +61,7 @@ class KsvTest {
                         withBom = false,
                         withHeader = true,
                         delimiter = ',',
-                        encoding = Encoding.UTF_8,
+                        encoding = CsvEncoding.UTF_8,
                     )
                 )
                 setSchema(csvSchema {
